@@ -9,6 +9,7 @@ def r_fist(_o)
 	unk2 = r_long("V")
 	#_ppp=File.new("tmp_list.txt","w")
 	print "file table start:0x",$file.pos.to_s(16),"\n"
+	_ppp=File.new("un.bms","a")
 	for nm in 1..files
 		offset = ttt(r_long("V"))#start
 		fsize = ttt(r_long("V"))#file size
@@ -26,6 +27,7 @@ def r_fist(_o)
 		print "room in 0x",$file.pos.to_s(16),"\n"
 		_ppp.print "log \"",name,"\" 0x",offset.to_s(16)," 0x",fsize.to_s(16),"\n"
 	end
+	_ppp.close
 end
 def ttt(_a)
 	return _a.to_s.gsub("[","").gsub("]","").to_i
