@@ -9,6 +9,7 @@ def r_fist(_o)
 	files = ttt(r_long("V")) #get file quantity
 	unk2 = r_long("V")
 	#_ppp=File.new("tmp_list.txt","w")
+	_ppp=File.new("un.bms","a")
 	print "file table start:0x",$file.pos.to_s(16),"\n"
 	for nm in 1..files
 		offset = ttt(r_long("V"))#start
@@ -18,14 +19,16 @@ def r_fist(_o)
 		#puts unk,total_data,start_table,table_sz,files,unk2,offset,fsize
 		#_ppp.puts name
 		#puts _ppp
-		mk_file(offset,fsize,name)#out save
+		#mk_file(offset,fsize,name)#out save
 		#puts $file.pos,r_long("V")
 		#_ppp.close
 		print "file name:",name,"\n"
-		print "start 0x",offset,"\n"
-		print "end 0x",(fsize+offset).to_s(16),"\n"
+		print "start 0x",offset.to_s(16),"\n"
+		print "size 0x",fsize.to_s(16),"\n"
 		print "room in 0x",$file.pos.to_s(16),"\n"
+		_ppp.print "log \"",name,"\" 0x",offset.to_s(16)," 0x",fsize.to_s(16),"\n"
 	end
+	_ppp.close
 end
 def ttt(_a)
 	return _a.to_s.gsub("[","").gsub("]","").to_i
@@ -35,7 +38,7 @@ def mk_file(_off,_stop,_na)#offset,file size,make file name
 	_n_file=File.new(_na,"w")#make file
 	$file.seek(_off)
 	_tmp_r=$file.read(_stop)
-	_n_file.puts _tmp_r
+	_n_file.syswrite(_tmp_r)
 	$file.seek(_org_pos)
 	_n_file.close
 end
@@ -49,3 +52,5 @@ else
 	print "this no CRAE file"
 	system "pause"
 end
+#use quickbms
+system "quickbms.exe un.bms #{nnname}"
